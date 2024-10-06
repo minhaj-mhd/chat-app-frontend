@@ -1,77 +1,31 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+
+
+import {useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Messages from './Messages';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
+
+import { useNavigate } from 'react-router-dom';
 import ChatArea from './ChatArea';
 import withAuthentication from '../utils/withAuthentication';
+
+import  {DrawerHeader,AppBar,Main} from "./NavbarHelperFns"
 const drawerWidth = 240;
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          marginLeft: 0,
-        },
-      },
-    ],
-  }),
-);
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
-}));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
-
- function SideBar() {
+ function HomeLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -79,6 +33,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const Logout=()=>{
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/login")
+  }
 
   return (
     <div className="container" >
@@ -116,6 +76,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
+        <Divider/>
+        <Divider sx={{ position: 'relative', marginTop: '100px', width: '100%' }}/>
+        <Button variant="outlined" onClick={Logout} sx={{borderColor:"red", color:"red", width: '100%' }}>Logout</Button>
+        
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
@@ -128,4 +92,4 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   );
   
 }
-export default withAuthentication(SideBar)
+export default withAuthentication(HomeLayout)

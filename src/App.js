@@ -2,7 +2,7 @@ import './App.css';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import SideBar from './Components/SidebarMaterial';
+import SideBar from './Components/HomeLayout';
 function App() {
   return (
     <Router>
