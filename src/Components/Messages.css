@@ -1,0 +1,33 @@
+/* .messages{
+    display: flex;
+} */
+.message{
+    margin-bottom: 15px;
+}
+
+.sent{
+    display: flex;
+    justify-content: flex-end;
+}
+.recieve{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.message-bubble{
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.sent .message-bubble{
+    background-color: #3498db;
+    color: #ffffff;
+    border-bottom-right-radius: 0;
+
+}
+.recieve .message-bubble{
+    background-color:cadetblue;
+    color: #ffffff;
+    border-bottom-left-radius: 0;
+}

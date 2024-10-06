@@ -30,15 +30,19 @@ function Login() {
 
     }
     const data = await response.json();
-      console.log(data)
+    const token=data.token
+    document.cookie=`token=${token}`
+    navigate("/")
+      console.log(token)
         setResponseMessage(`Login successfull`);
         setSuccess(true)
+
 
     }
       catch(error){
         setResponseMessage("Invalid credentials");
         setSuccess(false)
-
+        navigate("/")
       }
     }
   return (
