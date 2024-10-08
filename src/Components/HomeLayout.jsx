@@ -15,17 +15,25 @@ import Button from '@mui/material/Button';
 
 import { useNavigate } from 'react-router-dom';
 import ChatArea from './ChatArea';
+import UserAccounts from './UserAccounts';
 import withAuthentication from '../utils/withAuthentication';
-
+import Cookies from 'js-cookie';
+import api from '../utils/axios';
 import  {DrawerHeader,AppBar,Main} from "./NavbarHelperFns"
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 
 
  function HomeLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [chatWithUser,setchatWithUser]=React.useState(0)
+  const[chatUserName,setchatUserName]=React.useState()
   const navigate = useNavigate();
+
+  const handleIdchange = (value)=>{
+    setchatWithUser(value)
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -35,10 +43,19 @@ const drawerWidth = 240;
   };
 
   const Logout=()=>{
-    localStorage.clear();
-    sessionStorage.clear();
+    const cookies = Cookies.get(); // Get all cookies
+      for (const cookieName in cookies) {
+        Cookies.remove(cookieName); // Remove each cookie
+      }
+      console.log('All site cookies cleared!');
+      console.log(document.cookie)
+      delete api.defaults.headers.common['Authorization'];
+
     navigate("/login")
   }
+
+      
+    
 
   return (
     <div className="container" >
@@ -53,9 +70,10 @@ const drawerWidth = 240;
             onClick={handleDrawerOpen}
             edge="start"
             sx={[{ mr: 2 }, open && { display: 'none' }]}
-          >
+          > 
             <MenuIcon />
           </IconButton>
+          {chatWithUser.first_name}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -77,13 +95,15 @@ const drawerWidth = 240;
           </IconButton>
         </DrawerHeader>
         <Divider/>
+        <UserAccounts onValueChange = {handleIdchange}/>
         <Divider sx={{ position: 'relative', marginTop: '100px', width: '100%' }}/>
+
         <Button variant="outlined" onClick={Logout} sx={{borderColor:"red", color:"red", width: '100%' }}>Logout</Button>
         
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <ChatArea/>
+        <ChatArea chat_user={chatWithUser.id}/>
 
       </Main>
     </Box>
