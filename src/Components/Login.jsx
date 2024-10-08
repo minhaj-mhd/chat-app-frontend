@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import api from '../utils/axios';
 
 function Login() {
     const [email, setEmail] = useState("")
@@ -25,24 +26,27 @@ function Login() {
       }
     );
     if (!response.ok) {
-      throw new Error('Network response was not ok');
       setSuccess(false)
+      throw new Error('Network response was not ok');
+      
 
     }
     const data = await response.json();
     const token=data.token
     document.cookie=`token=${token}`
-    navigate("/")
-      console.log(token)
-        setResponseMessage(`Login successfull`);
-        setSuccess(true)
+    api.defaults.headers.common['Authorization']=`Bearer ${token}`
+     console.log(document.cookie)
+      setResponseMessage(`Login successfull`);
+      console.log("login successful")
+      setSuccess(true)
+      navigate("/")
+
 
 
     }
       catch(error){
         setResponseMessage("Invalid credentials");
         setSuccess(false)
-        navigate("/")
       }
     }
   return (

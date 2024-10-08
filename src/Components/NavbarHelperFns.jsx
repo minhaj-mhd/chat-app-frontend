@@ -3,7 +3,7 @@ import { styled} from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme }) => ({
       flexGrow: 1,
