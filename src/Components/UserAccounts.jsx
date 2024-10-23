@@ -11,14 +11,16 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-
 function UserAccounts( {onValueChange}) {
     const [data, setdata] = useState([])
     useEffect(() => {
     const fetchData =async()=>{
         try{
-            const response = await api.get("api/users/");
+            const response = await api.get("friends/list/");
+            console.log(response.data)
             setdata(response.data)
+
+
             
         }catch{
             console.log("error in fetching data")
@@ -34,6 +36,7 @@ function UserAccounts( {onValueChange}) {
     
   return (
     <div className='user-accounts'>
+ 
         {  <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {data.map((item,index) => (
                     <div className="" key={index}>

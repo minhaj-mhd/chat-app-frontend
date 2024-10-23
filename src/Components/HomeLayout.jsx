@@ -21,6 +21,9 @@ import Cookies from 'js-cookie';
 import api from '../utils/axios';
 import  {DrawerHeader,AppBar,Main} from "./NavbarHelperFns"
 import Welcome from './Welcome';
+import SearchUsers from './SearchUsers';
+import FriendRequests from './FriendRequests';
+
 const drawerWidth = 300;
 
 
@@ -96,6 +99,9 @@ const drawerWidth = 300;
           </IconButton>
         </DrawerHeader>
         <Divider/>
+        <SearchUsers/>
+        <Divider/>
+        <FriendRequests/>
         <UserAccounts onValueChange = {handleIdchange}/>
         <Divider sx={{ position: 'relative', marginTop: '100px', width: '100%' }}/>
 
