@@ -97,8 +97,8 @@ function ChatArea({chat_user}) {
     <div className="chat-area" >
         <div className="messages">
 
-          {messagesdata.map((obj)=>(
-            <div key={obj.id} className="">{obj.receiver===chat_user?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
+          {messagesdata.map((obj,index)=>(
+            <div key={index} className="">{obj.receiver===chat_user?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
           
            
             

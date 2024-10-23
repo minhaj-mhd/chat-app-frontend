@@ -5,7 +5,6 @@ const getTokenFromCookies = () => {
         return tokenCookie.split("=")[1]; // Return the token value
 
     }
-    console.log("tokenCookie",tokenCookie)
 
     return null; // Return null if the token does not exist
 };

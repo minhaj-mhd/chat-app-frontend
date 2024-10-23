@@ -11,14 +11,16 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-
 function UserAccounts( {onValueChange}) {
     const [data, setdata] = useState([])
     useEffect(() => {
     const fetchData =async()=>{
         try{
-            const response = await api.get("api/users/");
+            const response = await api.get("friends/list/");
+            console.log(response.data)
             setdata(response.data)
+
+
             
         }catch{
             console.log("error in fetching data")
@@ -34,19 +36,18 @@ function UserAccounts( {onValueChange}) {
     
   return (
     <div className='user-accounts'>
+ 
         {  <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {data.map((item) => (
-                    <div className="" >
+                {data.map((item,index) => (
+                    <div className="" key={index}>
                     <ListItem >
                     <ListItemAvatar>
-          <Avatar >{item.first_name[0]}</Avatar> 
-        </ListItemAvatar>
-                        <ListItemText primary={item.first_name} value={item.id} onClick={()=>handleClick({"id":item.id,"first_name":item.first_name,"last_name":item.last_name})} secondary={
-                <Typography variant="body2" style={{ fontSize: '0.75rem' }}> {/* Adjust font size here */}
+                        <Avatar >{item.first_name[0]}</Avatar> 
+                    </ListItemAvatar>
+                    <ListItemText primary={item.first_name} value={item.id} onClick={()=>handleClick({"id":item.id,"first_name":item.first_name,"last_name":item.last_name})} secondary={
+                    <Typography variant="body2" style={{ fontSize: '0.75rem' }}> {/* Adjust font size here */}
                     {item.email}
-                </Typography> }/>
-                        <Divider variant="inset" component="li" />
-
+                    </Typography> }/>
                     </ListItem>
                     <Divider variant="inset" component="li" />
 

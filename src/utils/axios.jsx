@@ -1,6 +1,6 @@
 import axios from 'axios';
 import getTokenFromCookies from './getToken';
-
+import { useNavigate } from 'react-router-dom';
 
 // Retrieve the token
 const token = getTokenFromCookies();

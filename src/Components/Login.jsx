@@ -33,6 +33,9 @@ function Login() {
     }
     const data = await response.json();
     const token=data.token
+    const user = data.user
+    console.log(user)
+    console.log(data.name)
     document.cookie=`token=${token}`
     api.defaults.headers.common['Authorization']=`Bearer ${token}`
      console.log(document.cookie)
