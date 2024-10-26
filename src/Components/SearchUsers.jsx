@@ -1,4 +1,5 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
+import { useUser } from './UserContext';
 import api from '../utils/axios';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -16,9 +17,9 @@ function SearchUsers() {
 
     const [data, setdata] = useState([])
     const [addData, setAddData] = useState([])
-    const [inputValue, setinputValue] = useState()
+    const [inputValue, setinputValue] = useState("")
     const [friend,setFriend]=useState()
-
+    const {chatWithUser,setchatWithUser} = useUser()
     const fetchData =async()=>{
         try{
             const response = await api.get("friends/users/",{
@@ -45,7 +46,10 @@ function SearchUsers() {
           });
         console.log(response.data)
         setAddData(response.data)
-
+        fetchData();
+    }
+    const handleclose =()=>{
+        setdata([])
     }
       return (
         <Box
@@ -55,9 +59,12 @@ function SearchUsers() {
         autoComplete="off"
       >
         
-        <TextField id="standard-basic" label="Search" variant="standard" value={inputValue} onChange={(e)=>{setinputValue(e.target.value)}}/>
-        <Button variant="contained" endIcon={<SearchIcon />} sx={{width:"10%"}} onClick={handleSearch}>
+        <TextField id="standard-basic" label="Enter the name or email" variant="standard" value={inputValue} onChange={(e)=>{setinputValue(e.target.value)}}/>
+        <div className="search-close" sx={{display:"flex"}}>
+        <Button variant="contained" endIcon={<SearchIcon />} sx={{}} onClick={handleSearch}>Search
       </Button>
+      <Button variant="contained"  sx={{backgroundColor:"red"}} onClick={handleclose}>close
+      </Button></div>
       {  <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {data.map((item,index) => (
                     <div className="" key={index}>
@@ -71,9 +78,14 @@ function SearchUsers() {
                     <Typography variant="body2" style={{ fontSize: '0.75rem' }}> {/* Adjust font size here */}
                     {item.email}
                     </Typography> }/>
-                    <Button variant="contained"  sx={{width:"10%"}} onClick={()=>
-                        handleAdd(item.id)}>AddFriend
-                    </Button>
+                    {item.friendship_status==="None"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+                        handleAdd(item.id)}>Add
+                    </Button>:item.friendship_status==="pending"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+                        {}}>Cancel
+                    </Button>:<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+                        {setchatWithUser(item)}}>chat
+                    </Button>}
+                    
                     </ListItem>
                     <Divider variant="inset" component="li" />
 
