@@ -3,7 +3,7 @@ import Messages from "./Messages"
 import "./ChatArea.css"
 import MessageInput from './MessageInput'
 import getTokenFromCookies from '../utils/getToken'
-
+import { useUser } from './UserContext'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -12,13 +12,13 @@ import EmojiPicker from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import zIndex from '@mui/material/styles/zIndex'
 
-function ChatArea({chat_user}) {
+function ChatArea() {
   const [wsInstance, setWsInstance] = useState(null)
   const [inputValue, setinputValue] = useState()
   const [messagesdata, setMessagesdata] = useState([]);  // To store all sent and received messages
   const [emojiOpen, setemojiOpen] = useState(false)
   const emojiPickerRef = useRef(null);
-
+  const {chatWithUser,setchatWithUser} = useUser();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
@@ -38,9 +38,10 @@ function ChatArea({chat_user}) {
     
 
   useEffect(() => {
+
     const token = getTokenFromCookies()
     
-    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${chat_user}/?token=${token}`);
+    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${chatWithUser.id}/?token=${token}`);
     setMessagesdata([])
     socket.onopen = () => {
       console.log('WebSocket connection established');
@@ -65,13 +66,13 @@ function ChatArea({chat_user}) {
     return () => {
       socket.close(); // Cleanup when component unmounts
     };
-  },[chat_user])
+  },[chatWithUser])
 
   
 
   const sendMessages = () =>{
 
-      const messageData = { message: inputValue,receiver:chat_user };
+      const messageData = { message: inputValue,receiver:chatWithUser.id };
 
       wsInstance.send(JSON.stringify(messageData))
 
@@ -97,8 +98,8 @@ function ChatArea({chat_user}) {
     <div className="chat-area" >
         <div className="messages">
 
-          {messagesdata.map((obj)=>(
-            <div key={obj.id} className="">{obj.receiver===chat_user?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
+          {messagesdata.map((obj,index)=>(
+            <div key={index} className="">{obj.receiver===chatWithUser.id?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
           
            
             

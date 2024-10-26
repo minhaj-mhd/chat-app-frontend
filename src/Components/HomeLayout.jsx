@@ -1,6 +1,6 @@
 import * as React from 'react';
-
-
+import { useContext } from 'react';
+import { useUser } from './UserContext';
 import {useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -20,6 +20,10 @@ import withAuthentication from '../utils/withAuthentication';
 import Cookies from 'js-cookie';
 import api from '../utils/axios';
 import  {DrawerHeader,AppBar,Main} from "./NavbarHelperFns"
+import Welcome from './Welcome';
+import SearchUsers from './SearchUsers';
+import FriendRequests from './FriendRequests';
+
 const drawerWidth = 300;
 
 
@@ -27,12 +31,13 @@ const drawerWidth = 300;
  function HomeLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [chatWithUser,setchatWithUser]=React.useState(0)
-  const[chatUserName,setchatUserName]=React.useState()
+  const {chatWithUser,setchatWithUser} = useUser();
   const navigate = useNavigate();
 
   const handleIdchange = (value)=>{
     setchatWithUser(value)
+    console.log(value)
+    console.log(chatWithUser)
   }
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -95,6 +100,9 @@ const drawerWidth = 300;
           </IconButton>
         </DrawerHeader>
         <Divider/>
+        <SearchUsers/>
+        <Divider/>
+        <FriendRequests/>
         <UserAccounts onValueChange = {handleIdchange}/>
         <Divider sx={{ position: 'relative', marginTop: '100px', width: '100%' }}/>
 
@@ -103,7 +111,9 @@ const drawerWidth = 300;
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <ChatArea chat_user={chatWithUser.id}/>
+
+        {chatWithUser.id===0?<Welcome></Welcome>:<ChatArea />}
+       
 
       </Main>
     </Box>
