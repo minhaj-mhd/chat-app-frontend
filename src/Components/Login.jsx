@@ -5,6 +5,13 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import api from '../utils/axios';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 function Login() {
     const [email, setEmail] = useState("")
@@ -12,6 +19,17 @@ function Login() {
     const [responseMessage, setResponseMessage] = useState(null);
     const navigate = useNavigate()
     const [success, setSuccess] = useState(false)
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+  
+    const handleMouseUpPassword = (event) => {
+      event.preventDefault();
+    };
 
     const handleSubmit =async(e)=>{
       e.preventDefault()
@@ -54,8 +72,33 @@ function Login() {
     }
   return (
     <div className='container'>
+
     <TextField className='mt-5' id="standard-basic" label="Email" variant="standard" onChange={(e)=>setEmail(e.target.value)}></TextField> <br />
-    <TextField id="standard-basic" label="Password" variant="standard"onChange={(e)=>setPassword(e.target.value)}/>  <br />
+    {/* <TextField id="standard-basic" label="Password" type ="password" variant="standard"/>  <br /> */}
+    <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+
+    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            onChange={(e)=>setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? 'hide the password' : 'display the password'
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+
     { responseMessage ? responseMessage &&success ? <Alert  severity="success">{responseMessage}</Alert>: <Alert  severity="error">{responseMessage}</Alert>: ""}
 
     <br />

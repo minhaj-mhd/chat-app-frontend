@@ -15,6 +15,11 @@ import Typography from '@mui/material/Typography';
 function FriendRequests() {
     const [data, setdata] = useState([])
     useEffect(() => {
+    
+    fetchData();
+    
+    }, [])
+
     const fetchData =async()=>{
         try{
             const response = await api.get("friends/friendrequests/");
@@ -27,15 +32,15 @@ function FriendRequests() {
             console.log("error in fetching data")
         }
     }
-    fetchData();
-    
-    }, [])
+
+
 
     const handleAccept = async(id)=>{
         const response = await api.post("friends/acceptrequest/",{
             friend:id,status:"accepted"
         });
             console.log(response.data)
+            fetchData();
     }
     const listComponent={}
   return (
