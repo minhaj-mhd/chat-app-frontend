@@ -48,6 +48,14 @@ function SearchUsers() {
         setAddData(response.data)
         fetchData();
     }
+    const handleCancel = async(id)=>{
+        const response= await api.post("friends/cancelrequest/",{
+            friend:id,
+        })
+        console.log(response);
+        fetchData()
+        
+    }
     const handleclose =()=>{
         setdata([])
     }
@@ -81,7 +89,7 @@ function SearchUsers() {
                     {item.friendship_status==="None"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
                         handleAdd(item.id)}>Add
                     </Button>:item.friendship_status==="pending"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
-                        {}}>Cancel
+                        {handleCancel(item.id)}}>Cancel
                     </Button>:<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
                         {setchatWithUser(item)}}>chat
                     </Button>}
