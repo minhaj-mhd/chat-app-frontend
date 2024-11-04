@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { useUser } from './UserContext';
 import {useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -23,7 +22,7 @@ import  {DrawerHeader,AppBar,Main} from "./NavbarHelperFns"
 import Welcome from './Welcome';
 import SearchUsers from './SearchUsers';
 import FriendRequests from './FriendRequests';
-
+import { useUser } from './UserContext';
 const drawerWidth = 300;
 
 
@@ -31,7 +30,7 @@ const drawerWidth = 300;
  function HomeLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const {chatWithUser,setchatWithUser} = useUser();
+  const {chatWithUser,setchatWithUser,user,setUser} = useUser();
   const navigate = useNavigate();
 
   const handleIdchange = (value)=>{
@@ -69,6 +68,7 @@ const drawerWidth = 300;
       <CssBaseline />
       <AppBar position="fixed" open={open} >
         <Toolbar  >
+
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -95,6 +95,8 @@ const drawerWidth = 300;
         open={open}
       >
         <DrawerHeader>
+        {user.first_name}
+
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
