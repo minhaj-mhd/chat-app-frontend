@@ -50,7 +50,7 @@ function ChatArea() {
     socket.onmessage = (event) => {
       console.log('Message received:', event.data);
       const data = JSON.parse(event.data); // Assuming the server sends a JSON message
-      setMessagesdata((prevMessages) => [...prevMessages, { text: data.message,receiver:data.receiver ,sent: false }]);
+      setMessagesdata((prevMessages) => [...prevMessages, { text: data.message,reciever:data.reciever ,sent: false }]);
 
       console.log(data.message)
     };
@@ -72,7 +72,7 @@ function ChatArea() {
 
   const sendMessages = () =>{
 
-      const messageData = { message: inputValue,receiver:chatWithUser.id };
+      const messageData = { message: inputValue,reciever:chatWithUser.id };
 
       wsInstance.send(JSON.stringify(messageData))
 
@@ -99,7 +99,7 @@ function ChatArea() {
         <div className="messages">
 
           {messagesdata.map((obj,index)=>(
-            <div key={index} className="">{obj.receiver===chatWithUser.id?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
+            <div key={index} className="">{obj.reciever===chatWithUser.id?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
           
            
             
