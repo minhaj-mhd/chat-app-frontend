@@ -45,6 +45,7 @@ function Login() {
     );
     if (!response.ok) {
       setSuccess(false)
+      console.log(response)
       throw new Error('Network response was not ok');
       
 
