@@ -113,10 +113,7 @@ const drawerWidth = 300;
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-
-        {chatWithUser.id===0?<Welcome></Welcome>:<ChatArea />}
-       
-
+        {chatWithUser.id === 0 ? <Welcome /> : <ChatArea />}
       </Main>
     </Box>
     

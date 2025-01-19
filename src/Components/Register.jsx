@@ -15,7 +15,7 @@
   const navigate = useNavigate()
   const handleSubmit =async(e)=>{
     e.preventDefault()
-    try{const response = await fetch("http://localhost:8000/accounts/register",{
+    try{const response = await fetch("https://chat-app-backend-gmjh.onrender.com/accounts/register",{
       method:"POST",
       headers:{
         'Content-Type': 'application/json',
