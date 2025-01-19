@@ -41,7 +41,7 @@ function ChatArea() {
 
     const token = getTokenFromCookies()
     
-    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${chatWithUser.id}/?token=${token}`);
+    const socket = new WebSocket(`ws://chat-app-backend-gmjh.onrender.com/ws/chat/${chatWithUser.id}/?token=${token}`);
     setMessagesdata([])
     socket.onopen = () => {
       console.log('WebSocket connection established');
