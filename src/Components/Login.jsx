@@ -33,7 +33,7 @@ function Login() {
 
     const handleSubmit =async(e)=>{
       e.preventDefault()
-      const BASE_URL="http://localhost:8000/accounts/"
+      const BASE_URL="https://chat-app-backend-gmjh.onrender.com/accounts/"
       try{const response = await fetch(`${BASE_URL}login`,{
         method:"POST",
         headers:{
