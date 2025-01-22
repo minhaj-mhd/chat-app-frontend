@@ -25,7 +25,6 @@ function SearchUsers() {
             const response = await api.get("friends/users/",{
                 params: { q: inputValue }
               });
-            console.log(response.data)
             setdata(response.data)
 
 
@@ -44,7 +43,6 @@ function SearchUsers() {
         const response = await api.post("friends/add/", {
             friend: id,
           });
-        console.log(response.data)
         setAddData(response.data)
         fetchData();
     }
@@ -52,7 +50,6 @@ function SearchUsers() {
         const response= await api.post("friends/cancelrequest/",{
             friend:id,
         })
-        console.log(response);
         fetchData()
         
     }

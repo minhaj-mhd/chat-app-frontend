@@ -35,8 +35,7 @@ const drawerWidth = 300;
 
   const handleIdchange = (value)=>{
     setchatWithUser(value)
-    console.log(value)
-    console.log(chatWithUser)
+
   }
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -51,8 +50,6 @@ const drawerWidth = 300;
       for (const cookieName in cookies) {
         Cookies.remove(cookieName); // Remove each cookie
       }
-      console.log('All site cookies cleared!');
-      console.log(document.cookie)
       delete api.defaults.headers.common['Authorization'];
 
     navigate("/login")
@@ -113,7 +110,7 @@ const drawerWidth = 300;
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {chatWithUser.id === 0 ? <Welcome /> : <ChatArea />}
+        { chatWithUser ?  <ChatArea /> : <Welcome />}
       </Main>
     </Box>
     

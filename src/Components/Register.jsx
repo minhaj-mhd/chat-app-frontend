@@ -4,7 +4,7 @@
  import Alert from '@mui/material/Alert';
  import { useNavigate } from 'react-router-dom';
  import Link from '@mui/material/Link';
-
+ import config from "../config"
  function Register() {
   const [email, setEmail] = useState("")
   const [first_name, setfirst_name] = useState("")
@@ -15,7 +15,7 @@
   const navigate = useNavigate()
   const handleSubmit =async(e)=>{
     e.preventDefault()
-    try{const response = await fetch("https://chat-app-backend-gmjh.onrender.com/accounts/register",{
+    try{const response = await fetch(`${config.apiUrl}/accounts/register`,{
       method:"POST",
       headers:{
         'Content-Type': 'application/json',
@@ -30,7 +30,6 @@
 
   }
   const data = await response.json();
-    console.log(data)
       setResponseMessage(`User created successfully`);
       setSuccess(true)
       navigate("/login");

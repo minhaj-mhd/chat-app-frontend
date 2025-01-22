@@ -1,14 +1,13 @@
 import axios from 'axios';
 import getTokenFromCookies from './getToken';
 import { useNavigate } from 'react-router-dom';
-
+import config from '../config';
 // Retrieve the token
 const token = getTokenFromCookies();
-console.log(token); // Debugging: Log the token to the console
 
 // Create an Axios instance
 const api = axios.create({
-    baseURL: 'https://chat-app-backend-gmjh.onrender.com/',
+    baseURL: `${config.apiUrl}/`,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
