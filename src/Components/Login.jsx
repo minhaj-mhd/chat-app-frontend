@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import config from '../config';
 
 function Login() {
     const [email, setEmail] = useState("")
@@ -33,7 +34,7 @@ function Login() {
 
     const handleSubmit =async(e)=>{
       e.preventDefault()
-      const BASE_URL="https://chat-app-backend-gmjh.onrender.com/accounts/"
+      const BASE_URL=`${config.apiUrl}/accounts/`
       try{const response = await fetch(`${BASE_URL}login`,{
         method:"POST",
         headers:{

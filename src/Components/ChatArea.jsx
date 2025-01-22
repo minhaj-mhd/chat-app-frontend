@@ -6,7 +6,7 @@ import getTokenFromCookies from '../utils/getToken'
 import { useUser } from './UserContext'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import config from "../config"
 import SendIcon from '@mui/icons-material/Send';
 import EmojiPicker from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
@@ -41,18 +41,18 @@ function ChatArea() {
 
     const token = getTokenFromCookies()
     
-    const socket = new WebSocket(`wss://chat-app-backend-gmjh.onrender.com/ws/chat/${chatWithUser.id}/?token=${token}`);
+
+    const socket = new WebSocket(`${config.webSocekUrl}/ws/chat/${chatWithUser.id}/?token=${token}`);
+
     setMessagesdata([])
     socket.onopen = () => {
       console.log('WebSocket connection established');
     };
     setWsInstance(socket);
     socket.onmessage = (event) => {
-      console.log('Message received:', event.data);
       const data = JSON.parse(event.data); // Assuming the server sends a JSON message
       setMessagesdata((prevMessages) => [...prevMessages, { text: data.message,reciever:data.reciever ,sent: false }]);
 
-      console.log(data.message)
     };
     socket.onerror = (event) => {
       console.error('WebSocket error:', event);
@@ -76,14 +76,12 @@ function ChatArea() {
 
       wsInstance.send(JSON.stringify(messageData))
 
-      console.log("send message:",inputValue)
       setinputValue("")
     
   }
 
   const onEmojiClickfn =(emojiObject,event)=>{
-    console.log(emojiObject.emoji)
-    console.log(emojiObject)
+
     setinputValue(inputValue+emojiObject.emoji)
   }
 
@@ -91,7 +89,6 @@ function ChatArea() {
   const [messages,setMessages] = useState("")
   const handleSendMessage = (value)=>{
     setMessages(value)
-    console.log(messages)
   }
   
   return (
