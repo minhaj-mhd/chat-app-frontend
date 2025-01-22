@@ -41,7 +41,9 @@ function ChatArea() {
 
     const token = getTokenFromCookies()
     
+
     const socket = new WebSocket(`${config.webSocekUrl}/ws/chat/${chatWithUser.id}/?token=${token}`);
+
     setMessagesdata([])
     socket.onopen = () => {
       console.log('WebSocket connection established');
