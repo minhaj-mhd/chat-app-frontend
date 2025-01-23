@@ -17,7 +17,6 @@ function UserAccounts( {onValueChange}) {
     const fetchData =async()=>{
         try{
             const response = await api.get("friends/list/");
-            console.log(response.data)
             setdata(response.data)
 
 
