@@ -23,7 +23,6 @@ function FriendRequests() {
     const fetchData =async()=>{
         try{
             const response = await api.get("friends/friendrequests/");
-            console.log(response.data)
             setdata(response.data)
 
 
@@ -39,7 +38,6 @@ function FriendRequests() {
         const response = await api.post("friends/acceptrequest/",{
             friend:id,status:"accepted"
         });
-            console.log(response.data)
             fetchData();
     }
     const listComponent={}
