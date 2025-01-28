@@ -72,7 +72,7 @@ function Login() {
   return (
     <div className='container'>
 
-    <TextField className='mt-5' id="standard-basic" label="Email" variant="standard" onChange={(e)=>setEmail(e.target.value)}></TextField> <br />
+    <TextField  id="standard-basic" label="Email" sx= {{ml:1,mt:5,}	} variant="standard" onChange={(e)=>setEmail(e.target.value)}></TextField> <br />
     {/* <TextField id="standard-basic" label="Password" type ="password" variant="standard"/>  <br /> */}
     <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
 

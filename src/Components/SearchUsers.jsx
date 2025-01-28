@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
+import "./SearchUsers.css";
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -66,10 +67,15 @@ function SearchUsers() {
         
         <TextField id="standard-basic" label="Enter the name or email" variant="standard" value={inputValue} onChange={(e)=>{setinputValue(e.target.value)}}/>
         <div className="search-close" sx={{display:"flex"}}>
-        <Button variant="contained" endIcon={<SearchIcon />} sx={{}} onClick={handleSearch}>Search
+        <Button className="search-button" variant="contained" endIcon={<SearchIcon />} sx={{}} onClick={handleSearch}>Search
       </Button>
-      <Button variant="contained"  sx={{backgroundColor:"red"}} onClick={handleclose}>close
-      </Button></div>
+      
+      { data.length !== 0 ? 
+  <Button variant="contained" sx={{backgroundColor:"red"}} onClick={handleclose}>
+    clear
+  </Button> : "" }
+      
+      </div>
       {  <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {data.map((item,index) => (
                     <div className="" key={index}>
@@ -83,11 +89,12 @@ function SearchUsers() {
                     <Typography variant="body2" style={{ fontSize: '0.75rem' }}> {/* Adjust font size here */}
                     {item.email}
                     </Typography> }/>
-                    {item.friendship_status==="None"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+
+                    {item.friendship_status==="None"?<Button className='action-button' variant="contained"  sx={{width:"10%"}} onClick={()=>
                         handleAdd(item.id)}>Add
-                    </Button>:item.friendship_status==="pending"?<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+                    </Button>:item.friendship_status==="pending"?<Button className='action-button' variant="contained"  sx={{width:"10%"}} onClick={()=>
                         {handleCancel(item.id)}}>Cancel
-                    </Button>:<Button variant="contained"  sx={{width:"10%"}} onClick={()=>
+                    </Button>:<Button className='action-button' variant="contained"  sx={{width:"10%"}} onClick={()=>
                         {setchatWithUser(item)}}>chat
                     </Button>}
                     

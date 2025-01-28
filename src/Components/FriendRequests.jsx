@@ -49,10 +49,10 @@ function FriendRequests() {
         sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
         noValidate
         autoComplete="off"
-      >
+      > {data.length !== 0 ?
                 <Typography variant="body1" style={{ fontSize: '1rem' }}> {/* Adjust font size here */}
             Friend Requests
-            </Typography>
+            </Typography> :""}
     
       {  <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {data.map((item,index) => (
@@ -77,7 +77,7 @@ function FriendRequests() {
                 ))}
             </List>
            }
-
+           
       </Box>
   )
 }
