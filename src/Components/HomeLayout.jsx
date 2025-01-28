@@ -92,7 +92,7 @@ const drawerWidth = 300;
         open={open}
       >
         <DrawerHeader>
-        {user.first_name}
+
 
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
