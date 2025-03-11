@@ -12,7 +12,7 @@ function App() {
     useEffect(() => {
       const checkAccount = async () => {
         try {
-          const response = await fetch(`${BASE_URL}check`, {
+          const response = await fetch(`${BASE_URL}check/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

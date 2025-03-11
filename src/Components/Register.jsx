@@ -15,7 +15,7 @@
   const navigate = useNavigate()
   const handleSubmit =async(e)=>{
     e.preventDefault()
-    try{const response = await fetch(`${config.apiUrl}/accounts/register/`,{
+    try{const response = await fetch(`${config.apiUrl}/accounts/register`,{
       method:"POST",
       headers:{
         'Content-Type': 'application/json',
