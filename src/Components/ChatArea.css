@@ -8,7 +8,7 @@
     overflow-y: scroll; /* Enable vertical scroll */
     padding: 10px;
     display: flex;
-    flex-direction: column-reverse; /* Reverse order so new messages appear at the bottom */
+    flex-direction: column; /* Reverse order so new messages appear at the bottom */
     scrollbar-width: none; /* For Firefox */
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   }

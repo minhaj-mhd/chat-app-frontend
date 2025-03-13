@@ -1,130 +1,141 @@
-import React,{useEffect, useState,useRef}from 'react'
-import Messages from "./Messages"
-import "./ChatArea.css"
-import MessageInput from './MessageInput'
-import getTokenFromCookies from '../utils/getToken'
-import { useUser } from './UserContext'
+import React, { useEffect, useState, useRef } from 'react';
+import Messages from "./Messages";
+import "./ChatArea.css";
+import getTokenFromCookies from '../utils/getToken';
+import { useUser } from './UserContext';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import config from "../config"
+import config from "../config";
 import SendIcon from '@mui/icons-material/Send';
 import EmojiPicker from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import zIndex from '@mui/material/styles/zIndex'
 
 function ChatArea() {
-  const [wsInstance, setWsInstance] = useState(null)
-  const [inputValue, setinputValue] = useState()
-  const [messagesdata, setMessagesdata] = useState([]);  // To store all sent and received messages
-  const [emojiOpen, setemojiOpen] = useState(false)
+  const [wsInstance, setWsInstance] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [messagesData, setMessagesData] = useState([]); 
+  const [emojiOpen, setEmojiOpen] = useState(false);
   const emojiPickerRef = useRef(null);
-  const {chatWithUser,setchatWithUser} = useUser();
+  const messagesEndRef = useRef(null);
+  const { chatWithUser } = useUser();
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
-        setemojiOpen(false); // Close emoji picker
+        setEmojiOpen(false);
       }
     };
-        // Add event listener when emoji picker is open
-        if (emojiOpen) {
-          document.addEventListener('mousedown', handleClickOutside);
-        }
-    
-        // Clean up the event listener when component unmounts or emojiOpen changes
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-        };
-      }, [emojiOpen]);
-    
+
+    if (emojiOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [emojiOpen]);
 
   useEffect(() => {
-
-    const token = getTokenFromCookies()
-    
-
+    const token = getTokenFromCookies();
     const socket = new WebSocket(`${config.webSocekUrl}/ws/chat/${chatWithUser.id}/?token=${token}`);
 
-    setMessagesdata([])
+    setMessagesData([]);
+
     socket.onopen = () => {
       console.log('WebSocket connection established');
     };
-    setWsInstance(socket);
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data); // Assuming the server sends a JSON message
-      setMessagesdata((prevMessages) => [...prevMessages, { text: data.message,reciever:data.reciever ,sent: false }]);
 
+    setWsInstance(socket);
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setMessagesData((prevMessages) => [
+        ...prevMessages,
+        { text: data.message, reciever: data.reciever, sent: false },
+      ]);
     };
+
     socket.onerror = (event) => {
       console.error('WebSocket error:', event);
     };
 
     socket.onclose = (event) => {
       console.log('WebSocket connection closed', event);
-      
     };
 
     return () => {
-      socket.close(); // Cleanup when component unmounts
+      socket.close();
     };
-  },[chatWithUser])
+  }, [chatWithUser]);
 
-  
+  // ✅ Scroll to the bottom when new messages are added
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messagesData]);
 
-  const sendMessages = () =>{
+  const sendMessage = () => {
+    if (!inputValue.trim()) return;
 
-      const messageData = { message: inputValue,reciever:chatWithUser.id };
+    const messageData = { message: inputValue, reciever: chatWithUser.id };
+    wsInstance.send(JSON.stringify(messageData));
 
-      wsInstance.send(JSON.stringify(messageData))
+    // setMessagesData((prevMessages) => [
+    //   ...prevMessages,
+    //   { text: inputValue, reciever: chatWithUser.id, sent: true }
+    // ]);
 
-      setinputValue("")
-    
-  }
+    setInputValue('');
+  };
 
-  const onEmojiClickfn =(emojiObject,event)=>{
+  const handleEmojiClick = (emojiObject) => {
+    setInputValue((prev) => prev + emojiObject.emoji);
+  };
 
-    setinputValue(inputValue+emojiObject.emoji)
-  }
-
-
-  const [messages,setMessages] = useState("")
-  const handleSendMessage = (value)=>{
-    setMessages(value)
-  }
-  
   return (
-    <div className="chat-area" >
-        <div className="messages">
-
-          {messagesdata.map((obj,index)=>(
-            <div key={index} className="">{obj.reciever===chatWithUser.id?<Messages text={obj.text} sent/>: <Messages text={obj.text} />} </div>))}
-          
-           
-            
-            
-        </div>
-        <div ref={emojiPickerRef}className='emoji-select' sx={{zIndex:"10"}}>
-          <EmojiPicker open={emojiOpen} onEmojiClick={onEmojiClickfn}/>
+    <div className="chat-area">
+      <div className="messages">
+        {messagesData.map((obj, index) => (
+          <div key={index} className="">
+            {obj.reciever === chatWithUser.id ? (
+              <Messages text={obj.text} sent />
+            ) : (
+              <Messages text={obj.text} />
+            )}
           </div>
-        <div className="input-area">
-        
-        <div className="message-input" >
-          <TextField id="standard-basic" label="Type your message." variant="standard" value={inputValue} className='text-input'
-          onChange ={(e)=>setinputValue(e.target.value)} sx={{width:"70%"}}/> 
-          
+        ))}
+        {/* Empty div to scroll to bottom */}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div ref={emojiPickerRef} className="emoji-select">
+        {emojiOpen && <EmojiPicker onEmojiClick={handleEmojiClick} />}
+      </div>
+
+      <div className="input-area">
+        <div className="message-input">
+          <TextField
+            label="Type your message..."
+            variant="standard"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            sx={{ width: '70%' }}
+          />
           <div className="buttons">
-          
-          <Button onClick={()=>setemojiOpen(!emojiOpen)} className='item'>
-            <EmojiEmotionsIcon/>
-          </Button>
-
-          <Button className='item' variant="contained" endIcon={<SendIcon />}  onClick={sendMessages}>
-          Send
-          </Button>
+            <Button onClick={() => setEmojiOpen(!emojiOpen)}>
+              <EmojiEmotionsIcon />
+            </Button>
+            <Button
+              variant="contained"
+              endIcon={<SendIcon />}
+              onClick={sendMessage}
+            >
+              Send
+            </Button>
           </div>
         </div>
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default ChatArea
+export default ChatArea;
